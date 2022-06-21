@@ -1,0 +1,40 @@
+###Go语言爬虫项目将结果写入MySql数据库
+https://blog.csdn.net/csdn_kou/article/details/90731891
+
+```shell
+	sql := "SELECT 
+	fc.token,
+	fc.id,
+	fc.tx_id,
+	fc.from_address,
+	fc.create_data 
+	FROM 
+	fc_order_hot fc 
+	where
+	fc.outer_order_no 
+	LIKE 'COLLECT%' 
+	AND 
+	fc.coin_name = '" + chain + "' 
+	AND fc.create_at > " + fmt.Sprintf("%d", cm.lastProcessTime) + 
+	" AND fc.status = 4 AND NOT exists
+	(SELECT 1 FROM fc_tx_transaction_new tn where tn.tx_id = fc.tx_id) 
+	ORDER BY fc.id ASC"
+
+```
+
+```shell
+Inputins, err := f.db.Prepare("INSERT INTO btc_transaction (Input_addr, Input_amount) VALUES( ?, ? )") // ?
+		if err != nil {
+			log.Printf("err：%v", err)
+		}
+		defer Inputins.Close()
+		inp, err := Inputins.Exec(Iaddr, Ivalue)
+		if err != nil {
+			fmt.Println("插入数据失败", err)
+		} else {
+			success, _ := inp.LastInsertId()
+			// 数字变成字符串,success是int64型的值，需要转为int，网上说的Itoa64()在strconv包里不存在
+			insertId := strconv.Itoa(int(success))
+			fmt.Println(strings.Join([]string{"成功插入数据：", insertId}, "\t-->\t"))
+		}
+```

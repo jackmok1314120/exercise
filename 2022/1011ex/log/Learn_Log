@@ -1,0 +1,87 @@
+###Log
+https://darjun.github.io/2020/02/07/godailylib/log/ \
+`log`默认输出到标准错误`（stderr）`，每条日志前会自动加上日期和时间。如果日志不是以换行符结尾的，那么log会自动加上换行符。即每条日志会在新行中输出。
+***
+###log提供了三组函数：
+
+* `Print`/`Printf`/`Println`：正常输出日志；
+* `Panic`/`Panicf`/`Panicln`：输出日志后，以拼装好的字符串为参数调用`panic`；
+* `Fatal`/`Fatalf`/`Fatalln`：输出日志后，调用`os.Exit(1)`退出程序。
+
+命名比较容易辨别，带f后缀的有格式化功能，带ln后缀的会在日志后增加一个换行符。
+####·`log.Fatalf`被调用
+```bash
+    log.Printf("%s login, age:%d", u.Name, u.Age)
+    log.Fatalf("Danger! hacker %s login", u.Name)
+    log.Panicf("Oh, system error when %s login", u.Name)
+return:
+    2022/01/11 15:55:39 dj login, age:18
+    2022/01/11 15:55:39 Danger! hacker dj login
+```
+####`log.Panicf`被调用
+```bash
+    log.Printf("%s login, age:%d", u.Name, u.Age)
+    log.Panicf("Oh, system error when %s login", u.Name)
+    log.Fatalf("Danger! hacker %s login", u.Name)
+```
+```bash
+return:
+2022/01/11 16:08:20 dj login, age:18
+2022/01/11 16:08:20 Oh, system error when dj login
+panic: Oh, system error when dj login
+goroutine 1 [running]:
+log.Panicf({0x10a99a6, 0x2}, {0xc0000bdf40, 0xc000092f70, 0x1004b79})
+        /usr/local/go/src/log/log.go:361 +0x67
+main.main()
+        /Users/jackmok/go/src/awesomeProject/2022/1011ex/log/log.go:28 +0xcb
+```
+
+***注意，上面的程序中由于调用`log.Panicf`会`panic`，所以`log.Fatalf`并不会调用。
+***
+###前缀
+调用`log.SetPrefix`为每条日志文本前增加一个前缀。例如，在上面的程序中设置Login:前缀：
+```bash
+    log.SetPrefix("Login: ")
+    log.Printf("%s login, age:%d", u.Name, u.Age)
+```
+
+`Login: 2022/01/11 15:44:13 dj login, age:18`
+
+***
+###选项
+设置选项可在每条输出的文本前增加一些额外信息，如日期时间、文件名等。
+
+log库提供了 6 个选项：
+```bash
+const (
+  Ldate         = 1 << iota
+  Ltime                    
+  Lmicroseconds            
+  Llongfile                
+  Lshortfile               
+  LUTC                     
+)
+```
+* `Ldate`：输出当地时区的日期，如`2020/02/07`；
+* `Ltime`：输出当地时区的时间，如`11:45:45`；
+* `Lmicroseconds`：输出的时间精确到微秒，设置了该选项就不用设置`Ltime了。如11:45:45.123123`；
+* `Llongfile`：输出长文件名+行号，含包名，如`github.com/darjun/go-daily-lib/log/flag/main.go:50`；
+* `Lshortfile`：输出短文件名+行号，不含包名，如`main.go:50`；
+* `LUTC`：如果设置了`Ldate`或`Ltime`，将输出 `UTC` 时间，而非当地时区。
+***
+####调用log.SetFlag设置选项，可以一次设置多个：
+```bash
+  log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
+  log.Printf("%s login, age:%d", u.Name, u.Age)
+```
+`return:
+2022/01/11 16:14:55.306878 log.go:35: dj login, age:18`\
+注意，调用`log.SetFlag`之后，原有的选项会被覆盖掉！
+`log`库还定义了一个`Lstdflag`，为`Ldate | Ltime`，这就是我们默认的选项。
+```bash
+const (
+  LstdFlags = Ldate | Ltime
+  )
+```
+默认情况下，每条日志前会自动加上日期和时间。
+***

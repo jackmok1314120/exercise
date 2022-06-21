@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/callback" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/checkbtctest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/checkbtctx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/checktxbtc" vcs="Git" />
+  </component>
+</project>

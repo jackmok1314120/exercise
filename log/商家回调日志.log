@@ -1,0 +1,1 @@
+time="2022-03-04T16:06:51+08:00" level=info msg="map[data:map[auditTime:2 billStatusName:充值确认中ing chainName:2 coinName:2 confirmTime:2 destroyFee:1 fee:12 id:12 memo:2 nums:02 phone:2 realNums:02 remark:3 resultName:待审核 serialNo:2 serviceName:3 txFromAddr:2 txId:1 txTime: txToAddr: txTypeName:链上地址转入-正在接收 upChainFee:0]]"

@@ -1,0 +1,27 @@
+#git上传注意
+
+> gitlab 上传代码用http版本
+```shell
+git init
+git remote add origin http://gitlab.webigwallet.com/jack/callback.git
+git add .
+git commit -m "Initial commit"
+git push -u origin master
+
+```
+> 删除. git
+```shell
+rm -rf .git
+```
+##git日常上传
+> 先拉后推
+```gitexclude
+git pull
+```
+> 如果冲突,暂存本地，先合并，后释放暂存，上传
+```shell
+git stash
+git pull
+git stash pop
+git push
+```

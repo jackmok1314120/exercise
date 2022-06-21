@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/2022/callback" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/2022/checkbtctest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/2022/checkbtctx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/2022/checkbtctx/checkbtctx" vcs="" />
+    <mapping directory="$PROJECT_DIR$/2022/checktxbtc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/202203" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/202203/qywx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/202203/teams/go-teams-notify" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/202203/teamsNotices" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/202204/casper-go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gorm" vcs="Git" />
+  </component>
+</project>

@@ -1,0 +1,82 @@
+# 欢乐课堂接口
+
+## 1.3	获取筛选数据
+
+```Java
+略
+```
+
+
+> 返回的JSON示例:
+
+```json
+{
+  ["1": {
+  	grade:{1:"一年级"……},
+  	semester:[上册,下册],
+  	publish:{1:"人民邮电出版社",2:"清华大学出版社"……}
+  },
+  "2": {
+  	grade:{1:"一年级"……},
+  	semester:[上册,下册],
+  	publish:{1:"人民邮电出版社",2:"清华大学出版社"……}
+  }],
+  updateTime : 172394433
+}
+```
+
+### HTTP 请求
+
+`GET /queryFilterData`
+
+### 请求参数
+
+参数 | 必选 | 默认 | 字段类型 | 字段说明
+--------- | ------- | ------- | -------- | ----------
+无
+
+### 返回字段说明
+
+参数  | 字段类型 | 字段说明
+--------- | ----------- | -----------
+status | string | 状态，有success和fail
+filterData | String | json格式的字符串
+updateTime | long 	| 最后更新时间
+
+
+## 1.6	获取视频列表
+
+```Java
+略
+> 返回的JSON示例:
+```json
+[ 
+  {
+	  "videoId": "1",
+	  "videoImgUrl" : "http://xxx.com/asd.png",
+	  "videoKnowdge","全等三角形"
+  },
+  {
+	  "videoId": "2",
+	  "videoImgUrl" : "http://xxx.com/asd.png",
+	  "videoKnowdge","全等三角形"
+  },
+]
+```
+根据科目、年级、出版社信息获取视频列表。每本教材的根节点中必须包含此教材最后更新的日期，以便小机端更新本地缓存。
+### HTTP 请求
+`GET /queryVideos`
+### 请求参数
+参数    | 必选 | 默认 | 字段类型 | 字段说明
+--------- | ------- | ------- | -------- | ----------
+uid | true | null | string | 用户账号
+subjectId | true | 0 | Integer | 科目ID
+sectionId | true | 0 | Integer | 学段ID
+gradeId |true | 0 | Integer | 年级ID
+publishId |true | 0 | Integer | 出版社ID
+### 返回字段说明
+参数  | 字段类型 | 字段说明
+--------- | ----------- | -----------
+videoId	| String |	视频编号
+videoImgUrl | String |	视频封面链接
+videoKnowdge | String | 视频知识点,可带多个知识点

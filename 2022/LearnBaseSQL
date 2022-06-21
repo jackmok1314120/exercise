@@ -1,0 +1,435 @@
+#SQL基础语法
+https://zhuanlan.zhihu.com/p/35917494
+###基础
+####1.select
+
+select 列名 from 表名
+
+select * from Student 显示Student所有信息
+***
+####2.distinct
+
+select distinct 列名 from 表名 显示表中唯一的列名(去除重复)
+***
+####3.where
+
+select * from Student where name='张三' 条件选择
+
+where里还能添加 between 、=、！=、>、<、like 、and、or等
+
+select * from Student where age>20
+***
+####4.and和or 把两个或者多个条件连接起来
+
+select * from Student where name='张三' and age=20
+
+select * from Student where name='张三' or age=20
+***
+####5.order by
+
+用来排序的，可以根据字母排序也可根据数字排序,有升序和降序两种 默认为升序，降序加上DESC
+
+select * from Student order by age
+***
+####6.insert into
+
+插入语句。
+
+insert into student(name,age) values ('李四',21)
+***
+####7.update
+
+update用于更新数据
+
+update Student set age=22 where name='张三'
+***
+####8.delete
+
+删除表中的行
+
+delete from Student where name='李四'
+####9.创建数据库
+
+create database Student
+***
+####10.创建数据库中的表
+```couchbasequery
+create table table_name
+(
+id int,
+name varchar(255),
+age int
+)
+```
+***
+####11.约束
+创建表的时候还应该对表添加一些约束，例如：主键，是否为空之类的
+```couchbasequery
+create table Student
+
+(
+id int not null auto-creament,
+name varchar(255) not null,
+age int ,
+primary key(id)
+)
+```
+***
+####12.删除数据库或表
+
+droptable Student
+
+drop database Student
+
+清空表中的数据
+
+truncate table Student
+
+没有删除表，只是清空了数据而已
+
+Alter table Student
+
+add birth date
+
+Alter 是用来改变表或数据库的关键字
+***
+###进阶阶段
+####1.top >.top
+
+top用来规定返回的记录的数目
+
+select top 1 * from Student 返回Student表的第一条数据
+
+select top 50 percent * from Student 返回Student表50%的数据
+****
+####2.like >2.like
+
+like用来指定模式匹配
+
+select * from Student where name like '张%' 返回Student表里名字以张开头的数据
+
+这里介绍一下通配符
+
+% 代表一个或者多个字符
+
+_ 代表一个字符
+
+[abc] abc中任一字符(这里类似java的regex)
+
+[^abc] 或者 [！abc] 不在abc中的任意字符（1个）
+
+####3.in > 3.in
+
+允许在where里规定多个值
+
+select * from Student where name in （'张三','李四'）
+****
+####4.between...and
+
+操作符选取了一个范围
+
+select * from Student where age between 15 and 30 选取15到30之前包含15的(mysql)
+
+不同数据库对这个包含的含义不同
+***
+####5.Alias
+
+用于表的别名
+
+select name as n , age as a from Student
+***
+####6.join...on
+
+连接2个或者多个表
+
+连接两个表需要注意，其中一个表中必须有另外一个表的主键,根据这个主键来连接。
+
+SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo
+
+FROM Persons INNER JOIN Orders ON Persons.Id_P = Orders.Id_P
+
+ORDER BY Persons.LastName
+
+inner join = join 选取两张表中共同的部分
+
+left join 选择左边表中所有部分
+
+right join 选择右边表中所有部分
+
+full join 选择两张表中所有部分
+***
+####7.Union
+
+合并两张表
+
+前提：两张表有相同数量的列，列的数据类型也必须相似
+***
+####8.select> 8.select into
+
+从一个表里选择数据插入到另外一个表里
+
+select * into Student_backup from Student
+***
+###升华阶段
+####1.索引
+
+在不读取整个表的情况下，索引使数据库应用程序可以更快地查找数据。
+
+可以在表中创建索引，以便更加快速高效地查询数据。
+
+用户无法看到索引，它们只能被用来加速搜索/查询。
+
+注释：更新一个包含索引的表需要比更新一个没有索引的表更多的时间，这是由于索引本身也需要更新。因此，理想的做法是仅仅在常常被搜索的列（以及表）上面创建索引。
+
+CREATE INDEX PersonIndex ON Person (LastName DESC)
+***
+####2.视图
+
+在 SQL 中，视图是基于 SQL 语句的结果集的可视化的表。
+
+视图包含行和列，就像一个真实的表。视图中的字段就是来自一个或多个数据库中的真实的表中的字段。我们可以向视图添加 SQL 函数、WHERE 以及 JOIN 语句，我们也可以提交数据，就像这些来自于某个单一的表。
+
+注释：数据库的设计和结构不会受到视图中的函数、where 或 join 语句的影响。
+
+可以从某个查询内部、某个存储过程内部，或者从另一个视图内部来使用视图。通过向视图添加函数、join 等等，我们可以向用户精确地提交我们希望提交的数据。
+
+CREATE VIEW [Current Product List] AS
+
+SELECT ProductID,ProductName
+
+FROM Products
+
+WHERE Discontinued=No
+
+SELECT * FROM [Products Above Average Price]
+***
+####3.函数
+
+SELECT AVG(column_name) FROM table_name 返回该列的平均数
+
+SELECT COUNT(column_name) FROM table_name 返回指定列的数目
+
+SELECT FIRST(column_name) FROM table_name 返回指定的字段中第一个记录的值
+
+SELECT LAST(column_name) FROM table_name 返回指定的字段中最后一个记录的值
+
+SELECT MAX(column_name) FROM table_name 返回一列中的最大值。NULL 值不包括在计算中
+
+SELECT MIN(column_name) FROM table_name 返回一列中的最小值。NULL 值不包括在计算中
+
+SELECT SUM(column_name) FROM table_name 返回数值列的总数（总额）
+***
+####4.group by
+
+GROUP BY 语句用于结合合计函数，根据一个或多个列对结果集进行分组\
+SELECT Customer,SUM(OrderPrice)\
+FROM Orders\
+GROUP BY Customer\
+select 语句中含有合计函数，必须进行分组。
+***
+####5.having
+在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与合计函数一起使用。\
+SELECT Customer,SUM(OrderPrice) FROM Orders\
+WHERE Customer='Bush' OR Customer='Adams'\
+GROUP BY Customer\
+HAVING SUM(OrderPrice)>1500
+***
+#MySQL语法总结-基础语法
+https://zhuanlan.zhihu.com/p/63111767
+![img.png](img.png)
+####一些最重要的 SQL 命令:
+* CREATE DATABASE - 创建新数据库
+* ALTER DATABASE - 修改数据库
+* CREATE TABLE - 创建新表
+* ALTER TABLE - 变更（改变）表
+* DROP TABLE - 删除表
+* SELECT - 从数据库中提取数据
+* UPDATE - 更新数据库中的数据
+* DELETE - 从数据库中删除数据
+* INSERT INTO - 向数据库中插入新数据
+* CREATE INDEX - 创建索引（搜索键）
+* DROP INDEX - 删除索引
+
+###SELECT 语句
+SELECT 语句用于从数据库中选取数据
+
+语法：
+
+`SELECT column_name,column_name FROM table_name;`
+
+或
+
+`SELECT * FROM table_name;`
+***
+###SELECT DISTINCT 语句
+SELECT DISTINCT 语句用于返回唯一不同的值
+
+语法:
+
+`SELECT DISTINCT column_name,column_name FROM table_name;`
+***
+###WHERE 子句
+WHERE 子句用于提取那些满足指定标准的记录
+
+语法：
+
+`SELECT column_name,column_name FROM table_name WHERE column_name operator value;`
+####举例：
+
+`--从 "Websites" 表中选取国家为 "CN" 的所有网站
+SELECT * FROM Websites WHERE country='CN';`\
+***注***：SQL 使用单引号来环绕文本值，如果是数值字段，不要使用引号
+
+###WHERE 子句中的运算符：
+运算符描述=等于<>不等于。
+
+**注释**：在 SQL 的一些版本中，该操作符可被写成 !=>大于<小于>=大于等于<=小于等于BETWEEN在某个范围内LIKE搜索某种模式IN指定针对某个列的多个可能值
+
+####Where 子句：
+搜索 empno 等于 7900 的数据：
+
+`Select * from emp where empno=7900;`
+
+####Where +条件（筛选行）：
+条件：列，比较运算符，值
+
+比较运算符包涵：= > < >= ,<=, !=,<> 表示（不等于）
+
+`Select * from emp where ename='SMITH';`
+例子中的 SMITH 用单引号引起来，表示是字符串，字符串要区分大小写。
+***
+###逻辑运算：
+**1.And**: **与** 同时满足两个条件的值。
+
+`Select * from emp where sal > 2000 and sal < 3000;`
+
+查询 EMP 表中 SAL 列中大于 2000 小于 3000 的值。
+
+**2.Or**: **或** 满足其中一个条件的值
+
+`Select * from emp where sal > 2000 or comm > 500;`
+查询 emp 表中 SAL 大于 2000 或 COMM 大于500的值。
+
+**3.Not**: **非** 满足不包含该条件的值。
+
+`select * from emp where not sal > 1500;`
+查询EMP表中 sal 小于等于 1500 的值。
+
+***逻辑运算的优先级***：
+
+`() not and or`
+
+###特殊条件：
+####1.空值判断： is null
+
+`Select * from emp where comm is null;`
+
+查询 emp 表中 comm 列中的空值。
+
+####2.between and (在 之间的值)
+
+`Select * from emp where sal between 1500 and 3000;`
+
+查询 emp 表中 SAL 列中大于 1500 的小于 3000 的值。
+
+**注意**: 大于等于 1500 且小于等于 3000， 1500 为下限，3000 为上限，下限在前，上限在后，查询的范围包涵有上下限的值。
+
+####3.In
+
+`Select * from emp where sal in (5000,3000,1500);`
+
+查询 EMP 表 SAL 列中等于 5000，3000，1500 的值。
+
+####4.like
+
+Like模糊查询
+
+`Select * from emp where ename like 'M%';`
+
+查询 EMP 表中 Ename 列中有 M 的值，M 为要查询内容中的模糊信息。
+
+* % 表示多个字值，_ 下划线表示一个字符；
+* M% : 为能配符，正则表达式，表示的意思为模糊查询信息为 M 开头的。
+* %M% : 表示查询包含M的所有内容。
+* %M_ : 表示查询以M在倒数第二位的所有内容。
+###AND & OR 运算符：
+AND & OR 运算符用于基于一个以上的条件对记录进行过滤
+
+####举例：
+
+`--从 "Websites" 表中选取 alexa 排名大于 "15" 且国家为 "CN" 或 "USA" 的所有网站
+SELECT * FROM Websites WHERE alexa > 15 AND (country='CN' OR country='USA');`
+
+###ORDER BY 关键字：
+ORDER BY 关键字用于对结果集按照一个列或者多个列进行排序，ORDER BY 关键字默认按照升序对记录进行排序。如果需要按照降序对记录进行排序，可以使用 DESC 关键字
+
+###语法：
+
+`SELECT column_name,column_name FROM table_name
+ORDER BY column_name,column_name ASC|DESC;`
+####举例：
+
+`--从 "Websites" 表中选取所有网站，并按照 "alexa" 列排序
+SELECT * FROM Websites ORDER BY alexa;`
+
+`--从 "Websites" 表中选取所有网站，并按照 "alexa" 列降序排序
+SELECT * FROM Websites ORDER BY alexa DESC;`
+
+`--从 "Websites" 表中选取所有网站，并按照 "country" 和 "alexa" 列排序
+SELECT * FROM Websites ORDER BY country,alexa;
+注：ORDER BY 多列的时候，先按照第一个column name排序，在按照第二个column name排序，ORDER BY 排列时，不写明ASC DESC的时候，默认是ASC`
+
+###INSERT INTO 语句：
+INSERT INTO 语句用于向表中插入新记录
+
+####语法：
+
+INSERT INTO 语句可以有两种编写形式。
+
+第一种形式无需指定要插入数据的列名，只需提供被插入的值即可：
+
+`INSERT INTO table_name VALUES (value1,value2,value3,...);
+`
+第二种形式需要指定列名及被插入的值：
+
+`INSERT INTO table_name (column1,column2,column3,...) VALUES (value1,value2,value3,...);`
+
+**注**：insert into select 和select into from 的区别
+
+`--插入一行,要求表scorebak 必须存在
+insert into scorebak select * from socre where neza='neza'`
+
+`--也是插入一行,要求表scorebak 不存在
+select *  into scorebak from score  where neza='neza' `
+###UPDATE 语句：
+UPDATE 语句用于更新表中已存在的记录
+
+####语法：
+
+`UPDATE table_name SET column1=value1,column2=value2,...
+WHERE some_column=some_value;`
+
+**注**：执行没有 WHERE 子句的 UPDATE 要慎重，再慎重
+
+###DELETE 语句：
+DELETE 语句用于删除表中的行
+
+####语法：
+
+`DELETE FROM table_name WHERE some_column=some_value;`
+
+####删除所有数据：
+可以在不删除表的情况下，删除表中所有的行。这意味着表结构、属性、索引将保持不变：
+
+`DELETE FROM table_name;`
+
+或
+
+`DELETE * FROM table_name;`
+
+**注**：
+
+WHERE 子句规定哪条记录或者哪些记录需要删除。如果省略了 WHERE 子句，所有的记录都将被删除！
+
+#sql语句面试50题（Mysql版附解析）
+https://zhuanlan.zhihu.com/p/130713078
